@@ -48,10 +48,12 @@ const productSchema = new mongoose.Schema({
     trim: true,
     required: [true, 'A product must have a summary']
   },
-  images: {
-    type: [String],
-    required: [true, 'A product must have a cover image']
-  },
+  images: [
+    {
+      type: String,
+      required: [true, 'A product must have a cover image']
+    }
+  ],
   createdAt: {
     type: Date,
     default: Date.now(),
