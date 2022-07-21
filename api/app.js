@@ -14,6 +14,7 @@ const app = express();
 
 const userRouter = require('./routes/userRoutes');
 const productRouter = require('./routes/productRoutes');
+const orderRouter = require('./routes/orderRoutes');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 
@@ -48,18 +49,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 //Routes
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/products', productRouter);
+app.use('/api/v1/orders', orderRouter);
 
 //Get PaymentStripe Route
 app.post('/payment', async (req, res) => {
   const { totalAmount } = req.body;
-  console.log(totalAmount);
+  console.log('BODY', totalAmount);
   try {
     const paymentIntent = await stripe.paymentIntents.create({
-      totalAmount,
+      amount: totalAmount,
       currency: 'KES',
       payment_method_types: ['card']
     });
-    console.log(paymentIntent);
+
     res.status(200).json(paymentIntent);
   } catch (e) {
     console.log(e.message);
